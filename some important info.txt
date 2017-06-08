@@ -1,0 +1,220 @@
+"""     
+if __name__ == '__main__':
+
+    with Core() as root:
+        root.on_content_changed()
+        root.mainloop()
+        print("Destroying")
+        del root
+
+    gc.collect()
+
+"""
+
+"""
+'__main__' is the name of the scope in which top-level code executes.
+A module’s __name__ is set equal to '__main__' when read from standard
+input, a script, or from an interactive prompt.
+
+if __name__ == "__main__":
+    # execute only if run as a script
+    main()
+
+Essentially a Python module is a script, so it can be run as a script:
+
+python fibo.py
+
+The module which has been started as a script will be executed as
+if it had been imported, but with one exception: The system variable
+__name__ is set to "__main__".
+
+
+With the following conditional statement the file can be used as a
+module or as a script, but only if it is run as a script the method
+fib will be started with a command line argument:
+
+if __name__ == "__main__":
+    import sys
+    fib(int(sys.argv[1]))
+
+
+If you import a module, let's say "import abc", the interpreter searches
+for this module in the following locations and in the order given:
+
+-The directory of the top-level file, i.e. the file being executed.
+-The directories of PYTHONPATH, if this global variable is set.
+-Standard installation path
+
+Module Packages
+
+It's possible to put several modules into a Package.
+A directory of Python code is said to be a package. 
+A package is imported like a "normal" module. 
+Each directory named within the path of a package must also contain
+a file named __init__.py, or else your package import will fail.
+
+https://docs.python.org/3/distutils/introduction.html?highlight=__init__
+
+------------------------------
+1. import SomeModule
+
+This is the simplest way to do imports and generally recommended.
+You get access to the module’s namespace provided you use the
+module’s name as a prefix. This means that you can have names
+in your program which are the same as those in the module, but
+you’ll be able to use both of them. It’s also helpful when you’re
+importing a large number of modules as you see which module a
+particular name belongs to.
+
+
+2. from SomeModule import SomeName
+
+This imports a name (or a few, separated by commas) from a module’s
+namespace directly into the program’s. To use the name you imported,
+you no longer have to use a prefix, just the name directly.
+This can be useful if you know for certain you’ll only need to use
+a few names. The downside is that you can’t use the name you
+imported for something else in your own program. For example,
+you could use add() instead of Integer.add(), but if your program
+has an add() function, you’ll lose access to the Integer’s add()
+function.
+
+
+Scoping
+
+Even though modules have their own global namespaces,
+this doesn’t mean that all names can be used from everywhere
+in the module. A scope refers to a region of a program from
+where a namespace can be accessed without a prefix.
+
+At any time there are a number of scopes in operation:
+the scope of the current function you’re in, the scope of
+the module and then the scope of the Python builtins.
+This nesting of scopes means that one function can’t
+access names inside another function.
+
+
+
+------------------------------
+A namespace is a mapping from names to objects.
+
+Examples of namespaces are: the set of built-in names.
+Global names in a module
+Local names in a function invocation
+
+The important thing to know about namespaces is that
+there is absolutely no relation between names in different
+namespaces; for instance, two different modules may both
+define a function maximize without confusion — users
+of the modules must prefix it with the module name.
+
+
+Strictly speaking, references to names in modules
+are attribute references: in the expression modname.funcname,
+modname is a module object and funcname is an attribute of it.
+In this case there happens to be a straightforward mapping
+between the module’s attributes and the global names defined
+in the module: they share the same namespace!
+
+Module attributes are writable: you can write modname.the_answer = 42.
+Writable attributes may also be deleted with the del statement.
+For example, del modname.the_answer will remove the attribute
+the_answer from the object named by modname.
+
+
+The statements executed by the top-level invocation of the
+interpreter, either read from a script file or interactively,
+are considered part of a module called __main__, so they have
+their own global namespace.
+
+
+The local namespace for a function is created when the function
+is called, and deleted when the function returns or raises an
+exception that is not handled within the function.
+
+A scope is a textual region of a Python program where a
+namespace is directly accessible.
+
+It is important to realize that scopes are determined textually:
+the global scope of a function defined in a module is that module’s
+namespace, no matter from where or by what alias the function is called.
+
+Assignments do not copy data — they just bind names to objects.
+
+The same is true for deletions: the statement del x removes the
+binding of x from the namespace referenced by the local scope.
+
+In fact, all operations that introduce new names use the
+local scope: in particular, import statements and function
+definitions bind the module or function name in the local scope.
+
+The global statement can be used to indicate that particular
+variables live in the global scope and should be rebound there;
+
+the nonlocal statement indicates that particular variables live
+in an enclosing scope and should be rebound there.
+
+
+Class definitions, like function definitions (def statements)
+must be executed before they have any effect.
+
+
+When a class definition is entered, a new namespace is created,
+and used as the local scope — thus, all assignments to local
+variables go into this new namespace. In particular, function
+definitions bind the name of the new function here.
+
+--------------------------------
+
+Class objects support two kinds of operations: attribute references
+and instantiation.
+
+Attribute references use the standard syntax used for all attribute
+references in Python: obj.name.
+
+Valid attribute names are all the names that were in the class’s
+namespace when the class object was created.
+
+Class instantiation uses function notation.
+x = MyClass()
+creates a new instance of the class and assigns this object
+to the local variable x.
+
+The instantiation operation (“calling” a class object)
+creates an empty object. Many classes like to create
+objects with instances customized to a specific initial state.
+
+Therefore a class may define a special method named __init__(),
+like this:
+
+def __init__(self):
+    self.data = []
+
+When a class defines an __init__() method, class instantiation
+automatically invokes __init__() for the newly-created class
+instance. So in this example, a new, initialized instance
+can be obtained by:
+
+x = MyClass()
+
+Data attributes override method attributes with the same name.
+
+Data attributes may be referenced by methods as well as by
+ordinary users (“clients”) of an object.
+
+Often, the first argument of a method is called self.
+This is nothing more than a convention: the name self
+has absolutely no special meaning to Python. Note, however,
+that by not following the convention your code may be less
+readable to other Python programmers, and it is also conceivable
+that a class browser program might be written that relies upon
+such a convention.
+
+The import statement combines two operations; it searches for
+the named module, then it binds the results of that search to
+a name in the local scope. The search operation of the import
+statement is defined as a call to the __import__() function,
+with the appropriate arguments. The return value of __import__()
+is used to perform the name binding operation of the import statement.
+
+"""
